@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
 import Card from './components/Card';
 
 const LEVEL_SIZE = {
@@ -43,9 +42,10 @@ class App extends Component {
 
         for (let i = cards.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
+            scrambleMap[i] = j;
             [cards[i], cards[j]] = [cards[j], cards[i]];
         }
-        this.setState({ game: level, gameCards: cards });
+        this.setState({ game: level, gameCards: cards, scrambleMap: scrambleMap });
     };
 
     renderCards = () => {
