@@ -7,6 +7,9 @@ class Easy extends Component {
             <div className="Easy">
                 <div className="container">
                     Easy
+                    <div className="game__container">
+
+                    </div>
                 </div>
             </div>
         );
