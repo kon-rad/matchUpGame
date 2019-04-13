@@ -58,6 +58,7 @@ class App extends Component {
 
     cardClickedHandler = (cardId) => {
         const cardKey = cardId % 2 === 0 ? cardId : cardId + 1;
+        const selectedKey = this.state.selectedCard % 2 === 0 ? this.state.selectedCard : this.state.selectedCard + 1;
         console.log(cardId,  this.state.selectedCard, cardKey);
         if (this.state.selectedCard) {
             if (this.state.selectedCard !== cardId && this.state.selectedCard === cardKey) {
