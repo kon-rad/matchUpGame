@@ -5,6 +5,11 @@
   --color3: rgba(197, 222, 205, 1);
   --color4: rgba(161, 232, 204, 1);
   --color5: rgba(73, 81, 89, 1);
+  --palette1: rgba(0, 0, 0, 1);
+  --palette2: rgba(47, 69, 80, 1);
+  --palette3: rgba(88, 111, 124, 1);
+  --palette4: rgba(184, 219, 217, 1);
+  --palette5: rgba(244, 244, 249, 1);
 }
 
 body {
@@ -15,20 +20,18 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--palette2);
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+nav {
+  background-color: var(--palette3);
+}
 .card__col {
-  max-width: 400px;
+  max-width: 800px;
   margin: 60px auto 500px;
-}
-.MEDIUM {
-  max-width: 600px;
-}
-.HARD {
-  max-width: 650px;
 }
 .card__menu {
   display: flex;
@@ -37,9 +40,16 @@ code {
 .game {
   display: flex;
   flex-wrap: wrap;
+  max-width: 400px;
+  margin: 0 auto 50px;
+}
+.game.HARD {
+  max-width: 600px;
+}
+.game.MEDIUM {
+  max-width: 600px;
 }
 /* START - Card Flip Effect */
-
 .card_box {
   cursor: pointer;
   border-radius: 12px;

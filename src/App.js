@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import Card from './components/Card';
 
 const LEVEL_SIZE = {
-    'EASY': 10,
-    'MEDIUM': 16,
-    'HARD': 24
+    'EASY': 12,
+    'MEDIUM': 24,
+    'HARD': 36
 };
 
 const EASY = 'EASY';
@@ -17,89 +17,110 @@ class App extends Component {
         super(props);
         this.state = {
             game: null,
-            cards: null,
             selectedCard: null,
             gameCards: [],
-            scrambleMap: [],
-            attemptCount: 0
+            mapIdtoIndex: [],
+            attempts: 0,
+            time: 0,
+            freeze: false
         }
     }
 
     initGame = (level) => {
         if (level === QUIT) {
-            this.setState({ game: null, gameCards: [] });
+            this.setState({ game: null, gameCards: [], attempts: 0 });
             return ;
         }
         const cards = [];
         let i = 0;
-        const scrambleMap = new Array(LEVEL_SIZE[level]);
+        const mapIdtoIndex = new Array(LEVEL_SIZE[level]);
         while (i < LEVEL_SIZE[level]) {
             cards.push(
-                <Card key={i} cardId={i} cardClicked={this.cardClickedHandler} cardHide={false}/>
+                <Card key={i} cardId={i} cardClicked={this.cardClickedHandler} removed={false} flipped={false}/>
             );
-            scrambleMap[i] = i;
+            mapIdtoIndex[i] = i;
             i++;
         };
 
         for (let i = cards.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [cards[i], cards[j]] = [cards[j], cards[i]];
-            [scrambleMap[i], scrambleMap[j]] = [scrambleMap[j], scrambleMap[i]];
+            [mapIdtoIndex[i], mapIdtoIndex[j]] = [mapIdtoIndex[j], mapIdtoIndex[i]];
         }
-        const mapIdtoIndex = Object.keys(scrambleMap).reduce((o, k) => Object.assign({}, o, { [scrambleMap[k]]: k }), {});
-        this.setState({ game: level, gameCards: cards, scrambleMap: mapIdtoIndex });
-        console.log(scrambleMap, cards);
+        const flippedMapIdtoIndex = Object.keys(mapIdtoIndex).reduce((o, k) => Object.assign({}, o, { [mapIdtoIndex[k]]: k }), {});
+        this.setState({ game: level, gameCards: cards, mapIdtoIndex: flippedMapIdtoIndex });
+        console.log(mapIdtoIndex, cards);
     };
 
     renderCards = () => {
-        console.log('renderCards called');
-        if (!this.state.game) {
+        if (this.state.game === null) {
             return;
         }
-        // return this.state.gameCards.map((v, i) => this.state.gameCards[this.state.scrambleMap[i]]);
         return this.state.gameCards;
     };
 
-    cardClickedHandler = (cardId) => {
+    cardClickedHandler = (newCardId) => {
+        if (this.state.freeze) return;
         const selected = this.state.selectedCard;
-        const cardKey = cardId % 2 === 1 ? cardId : cardId + 1;
+        const cardKey = newCardId % 2 === 1 ? newCardId : newCardId + 1;
         const selectedKey = selected % 2 === 1 ? selected : selected + 1;
-        console.log(cardId,  selected, cardKey);
-        if (selected) {
-            if (selected !== cardId && selectedKey === cardKey) {
-                this.removeCards(selected, cardId);
+        console.log(newCardId,  selected, cardKey);
+        this.showCard(newCardId);
+        if (selected !== null) {
+            if (selected !== newCardId && selectedKey === cardKey) {
+                setTimeout(() => this.removeCards(selected, newCardId), 800);
+                this.setState({ freeze: true });
             } else {
-                this.setState({ attemptCount: this.state.attemptCount + 1 });
+                setTimeout(() => this.hideCards(selected, newCardId), 500);
+                this.setState({ attempts: this.state.attempts + 1, freeze: true });
             }
             this.setState({ selectedCard: null });
         } else {
-            this.setState({ selectedCard: cardId });
+            this.setState({ selectedCard: newCardId });
         }
     };
 
-    removeCards = (selected, cardId) => {
-        console.log('remove', selected, cardId);
+    showCard(newCardId) {
         const cards = this.state.gameCards.slice();
-        cards[this.state.scrambleMap[selected]] = (
-          <Card key={selected} cardId={selected} cardClicked={this.cardClickedHandler} cardHide={true}/>
-        );
-        cards[this.state.scrambleMap[cardId]] = (
-          <Card key={cardId} cardId={cardId} cardClicked={this.cardClickedHandler} cardHide={true}/>
+        cards[this.state.mapIdtoIndex[newCardId]] = (
+          <Card key={newCardId} cardId={newCardId} cardClicked={this.cardClickedHandler} removed={false} flipped={true}/>
         );
         this.setState({ gameCards: cards });
+    };
+
+    hideCards(selected, newCardId) {
+        const cards = this.state.gameCards.slice();
+        cards[this.state.mapIdtoIndex[selected]] = (
+          <Card key={selected} cardId={selected} cardClicked={this.cardClickedHandler} removed={false} flipped={false}/>
+        );
+        cards[this.state.mapIdtoIndex[newCardId]] = (
+          <Card key={newCardId} cardId={newCardId} cardClicked={this.cardClickedHandler} removed={false} flipped={false}/>
+        );
+        this.setState({ gameCards: cards, freeze: false, selectedCard: null });
+    };
+
+    removeCards = (selected, cardId) => {
+        const cards = this.state.gameCards.slice();
+        cards[this.state.mapIdtoIndex[selected]] = (
+          <Card key={selected} cardId={selected} cardClicked={this.cardClickedHandler} removed={true} flipped={false}/>
+        );
+        cards[this.state.mapIdtoIndex[cardId]] = (
+          <Card key={cardId} cardId={cardId} cardClicked={this.cardClickedHandler} removed={true} flipped={false}/>
+        );
+        this.setState({ gameCards: cards, freeze: false, selectedCard: null });
     };
 
     render() {
         return (
             <div className="App">
                 <div className="container">
-                    <div className={`card__col ${this.state.game}`}>
+                    <div className="card__col">
                         <div className="card blue-grey darken-1">
                             <div className="card-content white-text">
                                 <span className="card-title">Flip-it Memory Card Game</span>
-                                <p>{this.state.game}</p>
+                                <p>{this.state.game} {this.state.time} {this.state.attempts}</p>
                             </div>
-                            <div className="game">
+                            <div className={`game ${this.state.game}`}>
                                 {this.renderCards()}
                             </div>
                             <div className="card-action card__menu">
