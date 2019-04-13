@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 
 const IMAGES = {
-    2: 'mood',
-    4: 'motorcycle',
-    6: 'pets',
-    8: 'public',
-    10: 'wb_sunny',
-    12: 'trending_up',
-    14: 'shopping_cart',
-    16: 'school',
-    18: 'restaurant',
-    20: 'pan_tool',
-    22: 'flight_takeoff',
-    24: 'flash_on'
+    1: 'mood',
+    3: 'motorcycle',
+    5: 'pets',
+    7: 'public',
+    9: 'wb_sunny',
+    11: 'trending_up',
+    13: 'shopping_cart',
+    15: 'school',
+    17: 'restaurant',
+    19: 'pan_tool',
+    21: 'flight_takeoff',
+    23: 'flash_on'
 };
 
 class Card extends Component {
@@ -22,30 +22,36 @@ class Card extends Component {
             flipped: false
         }
     }
+
+    cardClickHandler = () => {
+        this.setState({ flipped: true });
+        this.props.cardClicked(this.props.cardId);
+    };
+
     render() {
 
-        const icon = IMAGES[this.props.cardId % 2 === 0 ? this.props.cardId : this.props.cardId + 1];
+        const icon = IMAGES[this.props.cardId % 2 === 1 ? this.props.cardId : this.props.cardId + 1];
+        let cardClassNames = `card_box card_box-${this.props.cardId}`;
+        if (this.props.cardHide) {
+            cardClassNames += ' card_box__hide';
+        } else if (this.state.flipped) {
+            cardClassNames += ' card_box__active';
+        }
 
         return (
             <div
-                className={`flip_card ${this.state.flipped ? 'flip_card__active' : ''} card_box card_box-${this.props.cardId} ${this.props.cardHide ? 'flip_card__hide' : ''}`}
+                className={cardClassNames}
                 onClick={this.cardClickHandler}
             >
-                <div className="flip_card__inner">
-                    <div className="flip_card__front">
+                <div className="card_box__inner">
+                    <div className="card_box__front">
                     </div>
-                    <div className="flip_card__back">
+                    <div className="card_box__back">
                         <i className="large material-icons">{icon}</i>
                     </div>
                 </div>
             </div>
         );
-    }
-
-    cardClickHandler = () => {
-        this.setState({ flipped: true });
-        // setTimeout(() => this.setState({ flipped: false }), 2000);
-        this.props.cardClicked(this.props.cardId);
     }
 };
 
