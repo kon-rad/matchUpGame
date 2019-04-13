@@ -1,3 +1,3 @@
 
 
-# Flip-it Game in React
+# Match up Game in React

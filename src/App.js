@@ -162,7 +162,7 @@ class App extends Component {
                     <div className="card__col">
                         <div className="card blue-grey darken-1">
                             <div className="card-content white-text">
-                                <span className="card-title">Flip-it Memory Card Game</span>
+                                <span className="card-title">Match Up Memory Card Game</span>
                                 <div className="card-action card__menu">
                                     <a onClick={() => this.initGame(EASY)} className="waves-effect waves-teal btn-flat">Easy</a>
                                     <a onClick={() => this.initGame(MEDIUM)} className="waves-effect waves-teal btn-flat">Medium</a>
