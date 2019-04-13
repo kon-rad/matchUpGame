@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import Header from './components/Header';
-import { BrowserRouter, Route, Link } from "react-router-dom";
-
+import { BrowserRouter, Route } from "react-router-dom";
 
 const routing = (
     <BrowserRouter>
