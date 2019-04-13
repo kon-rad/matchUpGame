@@ -20,7 +20,7 @@
     "concurrently": "^4.1.0",
     "express": "^4.16.4"
   },
-  "homepage" : "http://kon-rad.github.io/matchUpGame/client",
+  "homepage" : "http://kon-rad.github.io/matchUpGame",
   "prettier": {
     "singleQuote": true
   },
