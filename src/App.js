@@ -77,8 +77,11 @@ class App extends Component {
     removeCards = (selected, cardId) => {
         console.log('remove', selected, cardId);
         const cards = this.state.gameCards.slice();
-        cards[selected] = cards[cardId] = (
-            <Card cardHide={true}/>
+        cards[selected] = (
+          <Card cardId={selected} cardClicked={this.cardClickedHandler} cardHide={true}/>
+        );
+        cards[cardId] = (
+          <Card cardId={cardId} cardClicked={this.cardClickedHandler} cardHide={true}/>
         );
         this.setState({ gameCards: cards });
     };
