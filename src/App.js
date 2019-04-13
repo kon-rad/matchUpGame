@@ -49,6 +49,7 @@ class App extends Component {
     };
 
     renderCards = () => {
+        console.log('renderCards called');
         if (!this.state.game) {
             return;
         }
@@ -57,12 +58,13 @@ class App extends Component {
     };
 
     cardClickedHandler = (cardId) => {
+        const selected = this.state.selectedCard;
         const cardKey = cardId % 2 === 0 ? cardId : cardId + 1;
-        const selectedKey = this.state.selectedCard % 2 === 0 ? this.state.selectedCard : this.state.selectedCard + 1;
-        console.log(cardId,  this.state.selectedCard, cardKey);
-        if (this.state.selectedCard) {
-            if (this.state.selectedCard !== cardId && this.state.selectedCard === cardKey) {
-                this.removeCards(cardId);
+        const selectedKey = selected % 2 === 0 ? selected : selected + 1;
+        console.log(cardId,  selected, cardKey);
+        if (selected) {
+            if (selected !== cardId && selectedKey === cardKey) {
+                this.removeCards(selected, cardId);
             } else {
                 this.setState({ attemptCount: this.state.attemptCount + 1 });
             }
@@ -72,8 +74,13 @@ class App extends Component {
         }
     };
 
-    removeCards = (cardId) => {
-        console.log(cardId);
+    removeCards = (selected, cardId) => {
+        console.log('remove', selected, cardId);
+        const cards = this.state.gameCards.slice();
+        cards[selected] = cards[cardId] = (
+            <Card cardHide={true}/>
+        );
+        this.setState({ gameCards: cards });
     };
 
     render() {

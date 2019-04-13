@@ -27,3 +27,53 @@ code {
   display: flex;
   flex-wrap: wrap;
 }
+/* START - Card Flip Effect */
+
+.flip_card {
+  background-color: transparent;
+  width: 90px;
+  height: 90px;
+  border: 1px solid #f1f1f1;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flip_card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip_card.flip_card__active .flip_card__inner {
+  transform: rotateY(180deg);
+}
+
+.flip_card__hidden {
+  display: none;
+  border: none;
+}
+/* Position the front and back side */
+.flip_card__front, .flip_card__back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip_card__front {
+  background-color: #bbb;
+  color: black;
+}
+
+/* Style the back side */
+.flip_card__back {
+  background-color: dodgerblue;
+  color: white;
+  transform: rotateY(180deg);
+}
+ /* END - Card Flip Effect */
