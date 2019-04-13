@@ -131,7 +131,7 @@ class App extends Component {
         this.gameWonMessage = (
           <div className="win_message">
               <h1>Great job!</h1>
-              <p>Level: {finalLevel}</p>
+              <p>Difficulty Level: {finalLevel}</p>
               <p>Time: {finalTime}</p>
               <p>Missed: {finalMissed}</p>
           </div>
@@ -145,7 +145,7 @@ class App extends Component {
             return;
         }
         return (
-          <p className="dashboard" >Level: {this.state.game} Time: {(this.state.time +'').toMMSS()} Missed: {this.state.missed}</p>
+          <p className="dashboard" >Difficulty Level: {this.state.game} Time: {(this.state.time +'').toMMSS()} Missed: {this.state.missed}</p>
         )
     }
 
