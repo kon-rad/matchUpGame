@@ -37,6 +37,12 @@ nav {
   padding-bottom: 70px;
   min-height: 600px;
 }
+.card .card-action {
+  padding: 16px 0;
+}
+.card .card-action a.dash_btn {
+  margin-right: 0!important;
+}
 .card__col {
   max-width: 800px;
   margin: 60px auto 500px;
@@ -50,6 +56,7 @@ nav {
   padding-top: 14px;
 }
 .game {
+  justify-content: center;
   display: flex;
   flex-wrap: wrap;
   max-width: 400px;
@@ -68,12 +75,10 @@ nav {
   background-color: transparent;
   width: 90px;
   height: 90px;
-  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+  perspective: 1000px;
 }
 .card_box:hover {
 }
-
-/* This container is needed to position the front and back side */
 .card_box__inner {
   position: relative;
   width: 100%;
@@ -82,8 +87,6 @@ nav {
   transition: transform 0.8s;
   transform-style: preserve-3d;
 }
-
-/* Do an horizontal flip when you move the mouse over the flip box container */
 .card_box.card_box__active .card_box__inner {
   transform: rotateY(180deg);
 }
@@ -94,7 +97,6 @@ nav {
   display: none;
   border: none;
 }
-/* Position the front and back side */
 .card_box__front, .card_box__back {
   position: absolute;
   width: 100%;
@@ -102,14 +104,10 @@ nav {
   backface-visibility: hidden;
   border-radius: 12px;
 }
-
-/* Style the front side (fallback if image is missing) */
 .card_box__front {
   background-color: var(--palette5);
   color: black;
 }
-
-/* Style the back side */
 .card_box__back {
   background-color: var(--color1);
   color: var(--palette5);
@@ -125,4 +123,13 @@ nav {
 .win_message p {
   text-align: center;
   font-size: 27px;
+}
+@media (max-width: 500px) {
+  .card_box {
+    width: 60px;
+    height: 60px;
+  }
+  i.large {
+    font-size: 4.1rem;
+  }
 }
