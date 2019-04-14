@@ -136,7 +136,16 @@ class Game extends Component {
         <p>Missed: {finalMissed}</p>
       </div>
     );
-    this.setState({ game: null, gameCards: [], missed: 0, remaining: 0, time: 0 });
+    this.setState({
+      game: null,
+      selectedCard: null,
+      remaining: null,
+      gameCards: [],
+      mapIdtoIndex: [],
+      missed: 0,
+      time: 0,
+      freeze: false
+    });
     clearInterval(this.tick);
   }
 
@@ -151,7 +160,16 @@ class Game extends Component {
 
   quitGame() {
     this.gameWonMessage = '';
-    this.setState({ game: null, gameCards: [], missed: 0, remaining: 0, time: 0 });
+    this.setState({
+      game: null,
+      selectedCard: null,
+      remaining: null,
+      gameCards: [],
+      mapIdtoIndex: [],
+      missed: 0,
+      time: 0,
+      freeze: false
+    });
     clearInterval(this.tick);
   }
 
