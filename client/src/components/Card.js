@@ -27,7 +27,6 @@ class Card extends Component {
     }
 
     render() {
-
         const icon = IMAGES[this.props.cardId % 2 === 1 ? this.props.cardId : this.props.cardId + 1];
         let cardClassNames = `card_box card_box-${this.props.cardId}`;
         if (this.props.removed === true) {
@@ -51,6 +50,6 @@ class Card extends Component {
             </div>
         );
     }
-};
+}
 
 export default Card;

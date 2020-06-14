@@ -44,9 +44,7 @@ class Game extends Component {
     let i = 0;
     const mapIdtoIndex = new Array(LEVEL_SIZE[level]);
     while (i < LEVEL_SIZE[level]) {
-      cards.push(
-        <Card key={i} cardId={i} cardClicked={this.cardClickedHandler} removed={false} flipped={false}/>
-      );
+      cards.push(this.createCardElement(i, false, false));
       mapIdtoIndex[i] = i;
       i++;
     };
@@ -56,9 +54,20 @@ class Game extends Component {
       [cards[i], cards[j]] = [cards[j], cards[i]];
       [mapIdtoIndex[i], mapIdtoIndex[j]] = [mapIdtoIndex[j], mapIdtoIndex[i]];
     }
-    const flippedMapIdtoIndex = Object.keys(mapIdtoIndex).reduce((o, k) => Object.assign({}, o, { [mapIdtoIndex[k]]: k }), {});
-    this.setState({ game: level, gameCards: cards, mapIdtoIndex: flippedMapIdtoIndex, remaining: LEVEL_SIZE[level] });
-    this.tick = setInterval(() => this.setState({ time: this.state.time + 1 }), 1000);
+    const flippedMapIdtoIndex
+      = Object.keys(mapIdtoIndex).reduce(
+        (o, k) => Object.assign({}, o, { [mapIdtoIndex[k]]: k }
+        ), {});
+    this.setState({
+      game: level,
+      gameCards: cards,
+      mapIdtoIndex: flippedMapIdtoIndex,
+      remaining: LEVEL_SIZE[level]
+    });
+    this.tick = setInterval(
+      () => this.setState({ time: this.state.time + 1 }),
+      1000
+    );
   };
 
   renderCards = () => {
@@ -90,38 +99,33 @@ class Game extends Component {
 
   showCard(newCardId) {
     const cards = this.state.gameCards.slice();
-    cards[this.state.mapIdtoIndex[newCardId]] = (
-      <Card key={newCardId} cardId={newCardId} cardClicked={this.cardClickedHandler} removed={false} flipped={true}/>
-    );
+    cards[this.state.mapIdtoIndex[newCardId]] = this.createCardElement(newCardId, false, true);
     this.setState({ gameCards: cards });
   };
 
   hideCards(selected, newCardId) {
     const cards = this.state.gameCards.slice();
-    cards[this.state.mapIdtoIndex[selected]] = (
-      <Card key={selected} cardId={selected} cardClicked={this.cardClickedHandler} removed={false} flipped={false}/>
-    );
-    cards[this.state.mapIdtoIndex[newCardId]] = (
-      <Card key={newCardId} cardId={newCardId} cardClicked={this.cardClickedHandler} removed={false} flipped={false}/>
-    );
+    cards[this.state.mapIdtoIndex[selected]] = this.createCardElement(selected, false, false);
+    cards[this.state.mapIdtoIndex[newCardId]] = this.createCardElement(newCardId, false, false);
     this.setState({ gameCards: cards, freeze: false, selectedCard: null });
   };
 
   removeCards = (selected, cardId) => {
     const cards = this.state.gameCards.slice();
-    cards[this.state.mapIdtoIndex[selected]] = (
-      <Card key={selected} cardId={selected} cardClicked={this.cardClickedHandler} removed={true} flipped={false}/>
-    );
-    cards[this.state.mapIdtoIndex[cardId]] = (
-      <Card key={cardId} cardId={cardId} cardClicked={this.cardClickedHandler} removed={true} flipped={false}/>
-    );
+    cards[this.state.mapIdtoIndex[selected]] = this.createCardElement(selected, true, false);
+    cards[this.state.mapIdtoIndex[cardId]] = this.createCardElement(cardId, true, false);
 
     if (this.state.remaining - 2 <= 0) {
       this.renderGameWonMessage();
 
       return;
     }
-    this.setState({ gameCards: cards, freeze: false, selectedCard: null, remaining: this.state.remaining - 2 });
+    this.setState({
+      gameCards: cards,
+      freeze: false,
+      selectedCard: null,
+      remaining: this.state.remaining - 2
+    });
   };
 
   renderGameWonMessage() {
@@ -154,7 +158,9 @@ class Game extends Component {
       return;
     }
     return (
-      <p className="dashboard" >Difficulty Level: {this.state.game} Time: {(this.state.time +'').toMMSS()} Missed: {this.state.missed}</p>
+      <p className="dashboard" >
+        Difficulty Level: {this.state.game} Time: {(this.state.time +'').toMMSS()} Missed: {this.state.missed}
+      </p>
     )
   }
 
@@ -173,6 +179,18 @@ class Game extends Component {
     clearInterval(this.tick);
   }
 
+  createCardElement(id, removed, flipped) {
+    return (
+      <Card
+        key={id}
+        cardId={id}
+        cardClicked={this.cardClickedHandler}
+        removed={removed}
+        flipped={flipped}
+      />
+    );
+  }
+
   render() {
     return (
       <div className="card__col">
@@ -180,10 +198,18 @@ class Game extends Component {
           <div className="card-content white-text">
             <span className="card-title">Match Up Memory Card Game</span>
             <div className="card-action card__menu">
-              <a onClick={() => this.initGame(EASY)} className="dash_btn waves-effect waves-teal btn-flat">Easy</a>
-              <a onClick={() => this.initGame(MEDIUM)} className="dash_btn waves-effect waves-teal btn-flat">Medium</a>
-              <a onClick={() => this.initGame(HARD)} className="dash_btn waves-effect waves-teal btn-flat">Hard</a>
-              <a onClick={() => this.quitGame()} className="dash_btn waves-effect waves-teal btn-flat">Quit</a>
+              <a onClick={() => this.initGame(EASY)} className="dash_btn waves-effect waves-teal btn-flat">
+                Easy
+              </a>
+              <a onClick={() => this.initGame(MEDIUM)} className="dash_btn waves-effect waves-teal btn-flat">
+                Medium
+              </a>
+              <a onClick={() => this.initGame(HARD)} className="dash_btn waves-effect waves-teal btn-flat">
+                Hard
+              </a>
+              <a onClick={() => this.quitGame()} className="dash_btn waves-effect waves-teal btn-flat">
+                Quit
+              </a>
             </div>
             {this.renderDashboard()}
           </div>
