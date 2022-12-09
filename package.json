@@ -18,7 +18,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "concurrently": "^5.2.0",
-    "express": "^4.16.4"
+    "express": "^4.17.3"
   },
   "homepage": "http://kon-rad.github.io/matchUpGame",
   "prettier": {
